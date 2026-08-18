@@ -1,5 +1,5 @@
 
-# RCAM Longitudinal Stability Analysis
+#RCAM_CG_Stability_Analysis
 
 MATLAB implementation of trim, linearization, and longitudinal stability analysis for the **Research Civil Aircraft Model (RCAM)** benchmark, focused on how center of gravity (CG) location affects static and dynamic longitudinal stability.
 
