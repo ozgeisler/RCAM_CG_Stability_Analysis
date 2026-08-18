@@ -15,4 +15,23 @@ The analysis is done in five stages:
 4. **Linearization sweep** — linearize the nonlinear 6DOF model about each trim point using implicit numerical differencing, producing one `A`, `B` pair per CG location.
 5. **Eigenvalue analysis** — extract the longitudinal 4-state subsystem (`u, w, q, theta`) from each linear model, plot eigenvalues across CG locations, and compare against the neutral point estimate from stage 2.
 
-## Repository structure
+## Requirements
+
+- MATLAB (no toolboxes required — uses base `fminsearch`, `eig`, `svd`)
+
+## How to run
+
+1. Run `trim_straight_level.m` once to generate `trim_values_straight_level.mat` (used as a fallback seed).
+2. Run `part3a_Cm_vs_alpha.m` to reproduce the pitching-moment-vs-alpha plot and estimate the neutral point.
+3. Run `trim_sweep_descend_vs_Xcg.m` to trim the descending condition at every CG location and save `trim_values_descend_vs_Xcg.mat`.
+4. Run `part3d_linearize_vs_Xcg.m` to linearize about each trim point and save `linear_models_vs_Xcg.mat`.
+5. Run `part3e_eigenvalues_vs_Xcg.m` to plot the longitudinal eigenvalues and print the stability table.
+
+## Notes
+
+- `fminsearch` on this 14-variable trim problem converges slowly on some CG locations due to poor variable scaling; trim scripts re-seed `fminsearch` across multiple passes per CG and report the residual cost `f0` so convergence can be checked directly rather than assumed from smooth-looking output.
+- The pitching moment coefficient is computed purely from aerodynamics (no engine contribution), consistent with a wind-tunnel measurement, and evaluated at zero sideslip so the wind-axis and body-axis pitching moment coincide.
+
+## Background
+
+RCAM is a nonlinear 6-DOF rigid-body aircraft model with 9 states (`u, v, w, p, q, r, phi, theta, psi`) and 5 controls (aileron, stabilizer, rudder, and two throttle inputs), originally developed as a GARTEUR benchmark for flight control research.
